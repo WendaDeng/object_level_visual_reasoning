@@ -1,6 +1,6 @@
 import argparse
 import model.models as models
-from inference import inference
+from inference import inference, epic_inference
 import ipdb
 
 if __name__ == '__main__':
@@ -28,6 +28,7 @@ if __name__ == '__main__':
     parser.add_argument('--root', metavar='D',
                         default='./data/vlog',
                         help='location of the dataset directory')
+    parser.add_argument('--mask_dir', help='location of the mask data directory')
     parser.add_argument('-b', '--batch-size', default=4, type=int,
                         metavar='B', help='batch size')
     parser.add_argument('-t', '--t', default=2, type=int,
@@ -68,6 +69,9 @@ if __name__ == '__main__':
     parser.add_argument('--object-head', metavar='BH',
                         default='2D',
                         help='Nature of teh residual block of the object head: Bi where can be 2D, 3D or 2.5D')
+    parser.add_argument('--class_type', default='verb',
+                        # default='verb+noun',
+                        help='what are the types of the model output: verb or noun or verb+noun')
 
     # Args
     args, _ = parser.parse_known_args()
@@ -75,4 +79,9 @@ if __name__ == '__main__':
     # Dict
     options = vars(args)
 
-    inference.main(options)
+    if options['dataset'] == 'vlog':
+        inference.main(options)
+    elif options['dataset'] == 'epic':
+        epic_inference.main(options)
+    else:
+        raise NameError

@@ -1,5 +1,6 @@
 import pickle
 from loader.vlog import VLOG
+from loader.epic import EPIC
 import torch
 from loader.videodataset import my_collate
 from torch.nn import Module
@@ -9,6 +10,10 @@ import torch
 from utils.meter import *
 import shutil
 import math
+
+import numpy as np
+from pathlib import Path
+from torchvision import transforms
 
 
 def load_pickle(file):
@@ -31,20 +36,26 @@ def get_datasets_and_dataloaders(options, cuda=False):
             nb_crops = options['nb_crops']
         else:
             raise NameError
+
+        # Dataset
+        train_dataset = VideoDataset(options,
+                                     dataset=train_set_name,
+                                     nb_crops=1,
+                                     usual_transform=True,
+                                     add_background=options['add_background'])
+        val_dataset = VideoDataset(options,
+                                   dataset=val_set_name,
+                                   nb_crops=nb_crops,
+                                   usual_transform=True,
+                                   add_background=options['add_background'])
+    elif options['dataset'] == 'epic':
+        ipdb.set_trace()
+        gulp_root = Path(options['root'])
+        class_type = options['class_type']
+        train_dataset = EPIC(gulp_root / 'rgb/train', class_type, options)
+        val_dataset = EPIC(gulp_root / 'rgb/val', class_type, options)
     else:
         raise NameError
-
-    # Dataset
-    train_dataset = VideoDataset(options,
-                                 dataset=train_set_name,
-                                 nb_crops=1,
-                                 usual_transform=True,
-                                 add_background=options['add_background'])
-    val_dataset = VideoDataset(options,
-                               dataset=val_set_name,
-                               nb_crops=nb_crops,
-                               usual_transform=True,
-                               add_background=options['add_background'])
 
     # Dataloader
     train_loader = torch.utils.data.DataLoader(train_dataset,
@@ -65,6 +76,11 @@ def get_datasets_and_dataloaders(options, cuda=False):
 
 def get_loss_and_metric(options):
     if options['dataset'] == 'vlog':
+        # Metric
+        metric = AveragePrecisionMeter
+        # Loss
+        loss = CriterionLinearCombination(['bce', 'ce'], [15.0, 1.0])
+    elif options['dataset'] == 'epic':
         # Metric
         metric = AveragePrecisionMeter
         # Loss
