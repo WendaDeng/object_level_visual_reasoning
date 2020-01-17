@@ -8,8 +8,8 @@ PYTHONPATH=.
 
 # Settings
 resume=/mnt/shared_40t/dwd/epic-kitchens/orn/epic_checkpoint
-root=/mnt/shared_40t/dwd/epic-kitchens/dataset/EPIC_KITCHENS_2018/processed/gulp
-mask_dir=/mnt/shared_40t/dwd/epic-kitchens/dataset/EPIC_KITCHENS_2018/mask/masks_v2_for_AR_100x100_50/train
+root=/mnt/shared_40t/dwd/epic-kitchens/orn/data/epic
+mask_dir=/mnt/shared_40t/dwd/epic-kitchens/orn/data/epic/masks
 class_type=verb
 
 # Train the object head only with f=MLP

@@ -8,6 +8,7 @@ from PIL import Image
 import numpy as np
 import ipdb
 import pickle
+import pandas as pd
 from pycocotools import mask as maskUtils
 import lintel
 import time
@@ -29,6 +30,15 @@ class EPIC(VideoDataset):
 
         # Videos paths
         self.list_video, self.dict_video_length, self.dict_video_label = self.get_videos()
+
+    def get_labels(self, label_file):
+        labels = pd.read_pickle(label_file)
+        data = []
+        for i, row in labels.iterrows():
+            metadata = row.to_dict()
+            metadata["uid"] = i
+            data.append(metadata)
+        return data
 
     def get_videos(self):
         # Open the pickle file
