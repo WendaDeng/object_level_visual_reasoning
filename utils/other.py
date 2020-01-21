@@ -49,11 +49,16 @@ def get_datasets_and_dataloaders(options, cuda=False):
                                    usual_transform=True,
                                    add_background=options['add_background'])
     elif options['dataset'] == 'epic':
-        ipdb.set_trace()
-        gulp_root = Path(options['root'])
-        class_type = options['class_type']
-        train_dataset = EPIC(gulp_root / 'rgb/train', class_type, options)
-        val_dataset = EPIC(gulp_root / 'rgb/val', class_type, options)
+        VideoDataset = EPIC
+        # Dataset
+        train_dataset = VideoDataset(options, nb_classes=125, dataset='train',
+                                     nb_crops=1, usual_transform=True,
+                                     add_background=options['add_background'],
+                                     video_dir='videos', mask_dir='masks/preds_100x100_50')
+        val_dataset = VideoDataset(options, nb_classes=125, dataset='val',
+                                   nb_crops=1, usual_transform=True,
+                                   add_background=options['add_background'],
+                                   video_dir='videos', mask_dir='masks/preds_100x100_50')
     else:
         raise NameError
 
