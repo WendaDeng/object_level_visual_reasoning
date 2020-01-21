@@ -12,10 +12,12 @@ def main():
 		for i in img_list:
 			img = cv2.imread(i)
 			new_img = cv2.resize(img, (256, 256))
-			img_name = i.replace('dataset/EPIC_KITCHENS_2018/interim/rgb_train_segments', 'orn/data/epic/videos_256x256_30')
+			names = i.split('/')
+			img_name = os.path.join('/mnt/shared_40t/dwd/epic-kitchens/orn/data/epic/videos_256x256_30', '/'.join(names[-4:-1]))
 			img_dir = os.path.dirname(img_name)
 			if not os.path.exists(img_dir):
 				os.makedirs(img_dir)
+			print('Write to ', img_name)
 			cv2.imwrite(img_name, new_img)
 
 
