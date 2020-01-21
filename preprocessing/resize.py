@@ -12,7 +12,10 @@ def main():
 			img = cv2.imread(i)
 			new_img = cv2.resize(img, (256, 256))
 			img_name = i.replace('videos', 'videos_256x256_30')
-			img.imwrite(img_name, new_img)
+			img_dir = os.path.dirname(img_name)
+			if not os.path.exists(img_dir):
+				os.makedirs(img_dir, mode=0o666)
+			cv2.imwrite(img_name, new_img)
 
 
 
