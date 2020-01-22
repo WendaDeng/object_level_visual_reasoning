@@ -15,7 +15,7 @@ import time
 from torch.utils.data.dataloader import default_collate
 from random import shuffle
 from loader.videodataset import VideoDataset
-import jpeg4py as jpeg
+from skimage import io
 
 
 class EPIC(VideoDataset):
@@ -119,7 +119,7 @@ class EPIC(VideoDataset):
         frames = []
         for i in timesteps:
             img_path = os.path.join(video_fn, 'frame_{0:{fill}{align}10}.jpg'.format(i, fill=0, align='>'))
-            img = jpeg.JPEG(img_path).decode()
+            img = io.imread(img_path)
             frames.append(np.array(img, dtype=np.uint8))
         np_frames = np.array(frames, dtype=np.float32)
         return np_frames.transpose([3, 0, 1, 2])

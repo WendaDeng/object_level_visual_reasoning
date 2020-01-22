@@ -13,7 +13,7 @@ def main():
 			img = cv2.imread(i)
 			new_img = cv2.resize(img, (256, 256))
 			names = i.split('/')
-			img_name = os.path.join('/mnt/shared_40t/dwd/epic-kitchens/orn/data/epic/videos_256x256_30', '/'.join(names[-4:-1]))
+			img_name = os.path.join('/mnt/shared_40t/dwd/epic-kitchens/orn/data/epic/videos_256x256_30', '/'.join(names[-4:]))
 			img_dir = os.path.dirname(img_name)
 			if not os.path.exists(img_dir):
 				os.makedirs(img_dir)
