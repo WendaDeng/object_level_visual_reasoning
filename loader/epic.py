@@ -26,7 +26,7 @@ class EPIC(VideoDataset):
     def __init__(self, options, **kwargs):
         super().__init__(options, **kwargs)
 
-        self.class_type = options['class-type']
+        self.class_type = options['class_type']
         # Metadata pickle
         self.metadata_pickle = os.path.join(self.root, 'meta/train_labels.pkl')
         self.video_metadata = self.get_metadata(self.metadata_pickle)
@@ -46,10 +46,9 @@ class EPIC(VideoDataset):
 
     def get_videos(self):
         list_video = []
-        for root, dirs, files in os.walk(self.video_dir_full):
-            for d in dirs:
-                list_video.append(os.path.join(root, d))
-
+        for data in self.video_metadata:
+            video_fn = '{}/{}/{}_{}_{}-{}'.format(data['participant_id'], data['video_id'], data['video_id'], data['uid'], data['verb'], data['noun'])
+            list_video.append(os.path.join(self.video_dir_full, video_fn))
         return list_video
 
     def starting_point(self, id):

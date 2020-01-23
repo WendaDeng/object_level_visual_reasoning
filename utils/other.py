@@ -53,12 +53,10 @@ def get_datasets_and_dataloaders(options, cuda=False):
         # Dataset
         train_dataset = VideoDataset(options, nb_classes=125, dataset='train',
                                      nb_crops=1, usual_transform=True,
-                                     add_background=options['add_background'],
-                                     video_dir='videos', mask_dir='masks/preds_100x100_50')
+                                     add_background=options['add_background'])
         val_dataset = VideoDataset(options, nb_classes=125, dataset='val',
                                    nb_crops=1, usual_transform=True,
-                                   add_background=options['add_background'],
-                                   video_dir='videos', mask_dir='masks/preds_100x100_50')
+                                   add_background=options['add_background'])
     else:
         raise NameError
 

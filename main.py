@@ -78,6 +78,7 @@ if __name__ == '__main__':
 
     # Dict
     options = vars(args)
+    print(options)
 
     if options['dataset'] == 'vlog':
         inference.main(options)
